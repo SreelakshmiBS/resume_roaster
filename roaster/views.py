@@ -10,6 +10,7 @@ import docx
 
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+print("API KEY:", OPENROUTER_API_KEY)
 
 
 # HOME PAGE
@@ -120,7 +121,7 @@ Resume:
         headers = {
             "Authorization": f"Bearer {OPENROUTER_API_KEY}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "http://127.0.0.1:8000",
+            "HTTP-Referer": "https://resume-roaster-94wj.onrender.com",
             "X-Title": "Resume Roaster"
         }
 
