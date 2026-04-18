@@ -173,11 +173,9 @@
     .tier-track{flex:1;height:5px;background:rgba(180,160,220,0.18);border-radius:3px;overflow:hidden;}
     .tier-fill{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.22,1,.36,1);width:0%;}
     .roast-bubble{background:rgba(237,232,248,0.55);border:1px solid rgba(180,160,220,0.22);border-radius:12px;padding:0.65rem 0.9rem;font-size:0.8rem;color:var(--text-mid);line-height:1.55;font-style:italic;}
+    .django-result{background:var(--card-bg);border:1px solid var(--card-border);border-radius:18px;padding:1.5rem;font-size:0.875rem;color:var(--text-mid);line-height:1.7;white-space:pre-wrap;font-family:inherit;backdrop-filter:blur(12px);}
     footer{text-align:center;margin-top:3rem;font-size:0.8rem;color:var(--text-soft);}
     footer strong{color:var(--lav);}
-    
-    /* RAW RESULT BLOCK REMOVED — NO MORE REPETITION */
-    .hidden-raw { display: none; }
   </style>
 </head>
 <body>
@@ -240,11 +238,11 @@
     </div>
   </div>
 
-  <!-- RESULT SECTION - beautiful cards only, no raw repetition -->
+  <!-- RESULT -->
   <div id="result-section">
     <div class="result-header">
-      <div class="result-title">🔥 AI says....</div>
-      <div class="result-badge">Analysis Complete</div>
+      <div class="result-title">AI says....</div>
+      <div class="result-badge">AI Analysis Complete</div>
     </div>
 
     <!-- GOOD POINTS -->
@@ -342,14 +340,12 @@
     </div>
   </div>
 
-  <!-- hidden container to capture raw response from backend but never display it (prevents repetition) -->
   {% if result %}
-  <div id="raw-result-data" class="hidden-raw" data-raw="{{ result|escapejs }}"></div>
+  <div style="margin-top:1.5rem;">
+    <div class="result-header"><div class="result-title">AI Says&hellip;</div></div>
+    <pre class="django-result">{{ result }}</pre>
+  </div>
   {% endif %}
-
-  <footer>
-    <strong>🔥 RoastMaster 3000</strong> — we turn typos into therapy. Don't take it personally, take it as an upgrade.
-  </footer>
 </div>
 
 <script>
@@ -411,6 +407,7 @@
     }
   }, 420);
   
+  // pause when tab hidden for performance
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       clearInterval(intervalId);
@@ -517,18 +514,8 @@
   }
   
   window.addEventListener('DOMContentLoaded', function(){
-    // Check for hidden raw data from backend (if result exists from POST) and render ONLY in cards, no duplicate block
-    const rawContainer = document.getElementById('raw-result-data');
-    if(rawContainer && rawContainer.getAttribute('data-raw')) {
-      let rawText = rawContainer.getAttribute('data-raw');
-      // Decode HTML entities that might have been escaped
-      const txt = document.createElement('textarea');
-      txt.innerHTML = rawText;
-      const decoded = txt.value;
-      parseAndRender(decoded);
-      // Remove the raw container after use to ensure absolutely no duplicate
-      rawContainer.remove();
-    }
+    const dj = document.querySelector('.django-result');
+    if(dj) parseAndRender(dj.textContent);
     loadingDiv.style.display='none';
     submitBtn.disabled=false;
     submitBtn.textContent='Roast My Resume';
