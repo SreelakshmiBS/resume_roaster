@@ -7,8 +7,7 @@ from .models import ResumeRoast
 # File processing libraries
 import PyPDF2
 import docx
-from PIL import Image
-import pytesseract
+
 
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
@@ -37,16 +36,6 @@ def extract_docx(file):
         return "\n".join([p.text for p in doc.paragraphs])
     except:
         return "Error reading DOCX 😅"
-
-
-# 🖼 EXTRACT TEXT FROM IMAGE (OCR)
-def extract_image(file):
-    try:
-        img = Image.open(file)
-        return pytesseract.image_to_string(img)
-    except:
-        return "Error reading Image 😅"
-
 
 # MAIN ROAST FUNCTION
 def roast_resume(request):
@@ -79,9 +68,6 @@ def roast_resume(request):
 
             elif file_name.endswith(".docx"):
                 extracted_text = extract_docx(file)
-
-            elif file_name.endswith((".png", ".jpg", ".jpeg")):
-                extracted_text = extract_image(file)
 
             else:
                 extracted_text = "Unsupported file type 😅"
