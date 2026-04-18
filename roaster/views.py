@@ -9,9 +9,6 @@ import PyPDF2
 import docx
 
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-print("API KEY:", OPENROUTER_API_KEY)
-
 
 # HOME PAGE
 def home(request):
@@ -40,6 +37,10 @@ def extract_docx(file):
 
 # MAIN ROAST FUNCTION
 def roast_resume(request):
+        
+    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+    print("API KEY:", OPENROUTER_API_KEY)
+
     result = ""
     extracted_text = ""
 
@@ -57,7 +58,8 @@ def roast_resume(request):
         # 🗄 Save initial data
         obj = ResumeRoast.objects.create(
             resume_text=resume_text,
-            uploaded_file=file
+            uploaded_file=file.name
+
         )
 
         # 📂 Extract text from uploaded file
