@@ -340,6 +340,12 @@
     </div>
   </div>
 
+  {% if result %}
+  <div style="margin-top:1.5rem;">
+    <div class="result-header"><div class="result-title">AI Says&hellip;</div></div>
+    <pre class="django-result">{{ result }}</pre>
+  </div>
+  {% endif %}
 </div>
 
 <script>
